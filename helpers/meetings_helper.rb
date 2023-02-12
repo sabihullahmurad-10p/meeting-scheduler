@@ -1,5 +1,3 @@
-require 'byebug'
-
 module MeetingsHelper
   def invalid_meetings?(meetings)
     # have not used blank? or empty? as it is not present in core ruby

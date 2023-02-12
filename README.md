@@ -2,6 +2,8 @@
 
 - [Project Description](#project-description)
 - [Running Project](#running-project)
+- [Implementation Overview](#implementation-overview)
+
 
 
 # Project Description
@@ -22,3 +24,24 @@ extend past the start and end of the day.
 - copy the content of `.env.sample` and create a new file as `.env` and paste the content in it.  
 - `.env` may contain `START_TIME` in it which represents the start_time of first meeting of the day
 - Run the main file using the ruby command `ruby starter.rb`
+- Run test case using `rspec spec/meeting_scheduler_spec.rb`
+
+# Implementation Overview
+`starter.rb`
+- The root/main file for running the `meeting_scheduler` service.
+- It contains the *meetings_list* array of json/hash which act as a sample meeting list/data to be provided to service.
+
+`meeting_scheduler.rb`
+- The service that schedules the meeting as per requirements
+- It gets inherited from `application_service.rb` i.e ApplicationService class which has the implementation of *call* method.
+- *call* method forwards the arguments receieved in *MeetingScheduler.call()* to *new/initialize* of calling class and invokes *call* method.
+- The service logic starts with the partition of meeting list based on their types.
+- It adds the duration provided to meeting time and adds additonal 0.5 hours incase offsite meetings.
+- It displays the message if the meetings can fit in during the specified day time followed by meetings or else displays `No, can’t fit.`.
+
+`meeting_scheduler_spec.rb`
+- contains the test cases for `meeting_scheduler.rb` or `MeetingScheduler` class.
+
+`errors.rb`
+- The code has new class called `InvalidMeetingException` that inherits from the standard `StandardError` class in Ruby.
+- It is being used to display error or exception messages incase of invalid meeting list provided by `starter.rb`

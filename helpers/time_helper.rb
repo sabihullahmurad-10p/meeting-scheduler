@@ -1,5 +1,3 @@
-require 'byebug'
-
 module TimeHelper
   def to_time_format(time)
     time.strftime("%I:%M")
