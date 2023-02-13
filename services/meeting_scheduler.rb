@@ -32,7 +32,7 @@ class MeetingScheduler < ApplicationService
 
     sorted_meetings.each_with_index do |meeting, i|
       # add half an hour for offsite meeting if there are onsite meetings before
-      @meeting_start_time += add_hours(OFFSITE_MEETING_GAP_HOURS) if meeting[:type] == :offsite && i > 0
+      @meeting_start_time += add_hours(ENV['OFFSITE_MEETING_GAP_HOURS']&.to_f  || OFFSITE_MEETING_GAP_HOURS) if meeting[:type] == :offsite && i > 0
       add_to_scheduler_array(meeting)
       #setting the end time of previous meeting to start time of next
       @meeting_start_time = @meeting_end_time
