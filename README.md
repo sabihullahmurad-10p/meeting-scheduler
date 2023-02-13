@@ -20,9 +20,10 @@ end. This travel time however can overlap for back to back off-site meetings, an
 extend past the start and end of the day.
 
 # Running Project
+- Ruby-Version: 2.7.3
 - Run `bundle install`
 - copy the content of `.env.sample` and create a new file as `.env` and paste the content in it.  
-- `.env` may contain `START_TIME` in it which represents the start_time of first meeting of the day
+- `.env` may contain `START_TIME` and `DEFAULT_DURATION` in it which represents the start_time of first meeting of the day and default duration of day in hours
 - Run the main file using the ruby command `ruby starter.rb`
 - Run test case using `rspec spec/meeting_scheduler_spec.rb`
 

@@ -8,7 +8,8 @@ class MeetingScheduler < ApplicationService
   include TimeHelper
 
   DEFAULT_START_TIME_HOURS = 9
-  DEFAULT_MEETING_DURATION_HOURS = 8 # can also be made configurable
+  DEFAULT_MEETING_DURATION_HOURS = 8
+  OFFSITE_MEETING_GAP_HOURS = 0.5
   attr_accessor :meetings, :meeting_start_time, :meeting_end_time, :scheduled_meetings, :default_meeting_duration
 
   def initialize(meetings_list)
@@ -16,7 +17,7 @@ class MeetingScheduler < ApplicationService
     @meeting_start_time = time_in_hours(ENV['START_TIME']&.to_i || DEFAULT_START_TIME_HOURS)
     @scheduled_meetings = []
     @meeting_end_time = @meeting_start_time
-    @default_meeting_duration = @meeting_start_time + add_hours(DEFAULT_MEETING_DURATION_HOURS)
+    @default_meeting_duration = @meeting_start_time + add_hours(ENV['DEFAULT_DURATION']&.to_i  || DEFAULT_MEETING_DURATION_HOURS)
   end
 
   def call
@@ -31,7 +32,7 @@ class MeetingScheduler < ApplicationService
 
     sorted_meetings.each_with_index do |meeting, i|
       # add half an hour for offsite meeting if there are onsite meetings before
-      @meeting_start_time += add_hours(0.5) if meeting[:type] == :offsite && i > 0
+      @meeting_start_time += add_hours(OFFSITE_MEETING_GAP_HOURS) if meeting[:type] == :offsite && i > 0
       add_to_scheduler_array(meeting)
       #setting the end time of previous meeting to start time of next
       @meeting_start_time = @meeting_end_time
